@@ -42,6 +42,8 @@ GLuint genComputeProg(GLuint /*texHandle*/)
 		exit(40);
 	}
 	glAttachShader(progHandle, cs);
+	glDeleteShader(cs);
+	cs = 0;
 
 	glLinkProgram(progHandle);
 	glGetProgramiv(progHandle, GL_LINK_STATUS, &rvalue);

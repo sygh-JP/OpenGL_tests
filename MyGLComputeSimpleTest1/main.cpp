@@ -106,8 +106,16 @@ int main(int argc, char* argv[])
 	}
 
 	// TODO: GL リソースの破棄。
+	glDeleteTextures(1, &texHandle);
+	texHandle = 0;
+	glDeleteProgram(g_renderHandle);
+	g_renderHandle = 0;
+	glDeleteProgram(g_computeHandle);
+	g_computeHandle = 0;
 
 	glfwTerminate();
+
+	window = 0;
 
 	return 0;
 }

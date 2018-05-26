@@ -46,6 +46,8 @@ GLuint genRenderProg(GLuint /*texHandle*/)
 		exit(30);
 	}
 	glAttachShader(progHandle, vp);
+	glDeleteShader(vp);
+	vp = 0;
 
 	glCompileShader(fp);
 	glGetShaderiv(fp, GL_COMPILE_STATUS, &rvalue);
@@ -55,6 +57,8 @@ GLuint genRenderProg(GLuint /*texHandle*/)
 		exit(31);
 	}
 	glAttachShader(progHandle, fp);
+	glDeleteShader(fp);
+	fp = 0;
 
 	glBindFragDataLocation(progHandle, 0, "color");
 	glLinkProgram(progHandle);

@@ -8,8 +8,8 @@ Tests of OpenGL API by sygh.
 
 ## Target Environment (ターゲット環境)
 * Windows 7/Windows 8.1/Windows 10 (Desktop)
-* Graphics device compatible with OpenGL 4.3
-* Graphics driver compatible with OpenGL 4.3
+* Graphics device compatible with OpenGL 4.3 or higher
+* Graphics driver compatible with OpenGL 4.3 or higher
 
 Note: some of OpenGL extensions are required depending on applications.
 
@@ -17,4 +17,4 @@ Note: some of OpenGL extensions are required depending on applications.
 1. Install GLEW and GLFW
 1. Build each solution file
 
-2018-05-25, sygh.
+2018-05-26, sygh.
