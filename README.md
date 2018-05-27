@@ -5,6 +5,8 @@ Tests of OpenGL API by sygh.
 * Microsoft Visual Studio 2015 Update 3
 * GLEW 2.1.0
 * GLFW 3.2.1
+* FreeGLUT 3.0.0
+* GLM 0.9.9.0
 
 ## Target Environment (ターゲット環境)
 * Windows 7/Windows 8.1/Windows 10 (Desktop)
@@ -14,7 +16,8 @@ Tests of OpenGL API by sygh.
 Note: some of OpenGL extensions are required depending on applications.
 
 ## How to Build (ビルド方法)
-1. Install GLEW and GLFW
+1. Install GLEW, GLFW, FreeGLUT and GLM
+1. Append the global include and library directory paths to them
 1. Build each solution file
 
-2018-05-26, sygh.
+2018-05-28, sygh.
