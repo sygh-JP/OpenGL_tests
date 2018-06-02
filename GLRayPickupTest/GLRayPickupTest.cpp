@@ -9,11 +9,6 @@
 
 namespace
 {
-	const char WindowTitle[] = "OpenGL Ray Pickup Test";
-
-	const int InitialWindowPositionX = 100;
-	const int InitialWindowPositionY = 100;
-
 	// ワールド座標系での交差判定のマージン[Length]。
 	const float IntersectMarginInWolrd = 0.2f;
 	// スクリーン座標系での交差判定のマージン[Pixels]。
@@ -22,20 +17,20 @@ namespace
 
 #pragma region // グローバル変数。//
 
-	MyGLHelper::Viewport g_viewport = { 0, 0, 720, 720, 0.0f, 1.0f };
+	MyGLHelper::Viewport g_viewport = { 0, 0, 0, 0, 0.0f, 1.0f };
 	const MyGLHelper::PerspectiveParam g_persParam = { 45.0f, 0.1f, 1000.0f };
 	MyGLHelper::CameraParam g_camera(MyVector3F(0, 0, 80), MyVector3F(0, 0, 0), MyVector3F(0, 1, 0));
 
 	class MouseData
 	{
 	public:
-		bool IsLeftButtonPressed;
-		bool IsMiddleButtonPressed;
-		bool IsRightButtonPressed;
-		MyVector2I DragStartPosL;
-		MyVector2I DragStartPosM;
-		MyVector2I DragStartPosR;
-		MyVector2I CurrentPos;
+		bool IsLeftButtonPressed = false;
+		bool IsMiddleButtonPressed = false;
+		bool IsRightButtonPressed = false;
+		MyVector2I DragStartPosL = {};
+		MyVector2I DragStartPosM = {};
+		MyVector2I DragStartPosR = {};
+		MyVector2I CurrentPos = {};
 	public:
 		MouseData()
 		{}
@@ -98,46 +93,7 @@ namespace
 			++pStr;
 		}
 	}
-}
-
-// 関数プロトタイプ。
-void InitializeApp();
-void Display();
-void Idle();
-void Reshape(int w, int h);
-void Keyboard(unsigned char key, int x, int y);
-void Special(int key, int x, int y);
-void Mouse(int button, int state, int x, int y);
-void Motion(int x, int y);
-void PassiveMotion(int x, int y);
-void OnMouseWheel(int wheelNumber, int direction, int x, int y);
-
-// エントリーポイント。
-int main(int argc, char** argv)
-{
-	glutInit(&argc, argv);
-	glutInitWindowPosition(InitialWindowPositionX, InitialWindowPositionY);
-	glutInitWindowSize(g_viewport.Width, g_viewport.Height);
-	glutInitDisplayMode(GLUT_RGBA | GLUT_DEPTH | GLUT_DOUBLE);
-	glutCreateWindow(WindowTitle);
-	glutDisplayFunc(Display);
-	glutReshapeFunc(Reshape);
-	glutIdleFunc(Idle);
-	glutMouseFunc(Mouse);
-	glutMotionFunc(Motion);
-	glutPassiveMotionFunc(PassiveMotion);
-	glutKeyboardFunc(Keyboard);
-	glutSpecialFunc(Special);
-	glutMouseWheelFunc(OnMouseWheel);
-	// メイン ウィンドウにクローズ メッセージが投げられたときに、メイン ループを抜ける。
-	glutSetOption(GLUT_ACTION_ON_WINDOW_CLOSE, GLUT_ACTION_GLUTMAINLOOP_RETURNS);
-
-	InitializeApp();
-
-	glutMainLoop();
-
-	return 0;
-}
+} // end of namespace
 
 void InitializeApp()
 {
@@ -182,19 +138,6 @@ void InitializeApp()
 		}
 		point.IsSelected = false;
 	}
-}
-
-void Idle()
-{
-	glutPostRedisplay();
-}
-
-void Reshape(int w, int h)
-{
-	g_viewport.Width = (w > 0) ? w : 1;
-	g_viewport.Height = (h > 0) ? h : 1;
-
-	g_myMeshTrackball.OnResize(g_viewport.Width, g_viewport.Height);
 }
 
 namespace
@@ -249,6 +192,18 @@ namespace
 	}
 } // end of namespace
 
+void Idle()
+{
+	glutPostRedisplay();
+}
+
+void Reshape(int w, int h)
+{
+	g_viewport.Width = std::max(w, 1);
+	g_viewport.Height = std::max(h, 1);
+
+	g_myMeshTrackball.OnResize(g_viewport.Width, g_viewport.Height);
+}
 
 void Display()
 {
@@ -692,7 +647,6 @@ void Special(int key, int x, int y)
 	}
 }
 
-
 void OnMouseWheel(int wheelNumber, int direction, int x, int y)
 {
 	if (direction > 0)
@@ -708,4 +662,30 @@ void OnMouseWheel(int wheelNumber, int direction, int x, int y)
 	{
 		g_camera.Eye.z += 1;
 	}
+}
+
+int main(int argc, char** argv)
+{
+	glutInit(&argc, argv);
+	glutInitWindowPosition(100, 100);
+	glutInitWindowSize(720, 720);
+	glutInitDisplayMode(GLUT_RGBA | GLUT_DEPTH | GLUT_DOUBLE);
+	glutCreateWindow("OpenGL Ray Pickup Test");
+	glutDisplayFunc(Display);
+	glutReshapeFunc(Reshape);
+	glutIdleFunc(Idle);
+	glutMouseFunc(Mouse);
+	glutMotionFunc(Motion);
+	glutPassiveMotionFunc(PassiveMotion);
+	glutKeyboardFunc(Keyboard);
+	glutSpecialFunc(Special);
+	glutMouseWheelFunc(OnMouseWheel);
+	// メイン ウィンドウにクローズ メッセージが投げられたときに、メイン ループを抜ける。
+	glutSetOption(GLUT_ACTION_ON_WINDOW_CLOSE, GLUT_ACTION_GLUTMAINLOOP_RETURNS);
+
+	InitializeApp();
+
+	glutMainLoop();
+
+	return 0;
 }
